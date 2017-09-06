@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="stevekamau.todo.MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.ctrlplusz.anytextview.AnyTextView
+            android:id="@+id/day_today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            android:paddingTop="20dp"
+            android:text="Thursday, 10th"
+            android:textColor="@color/title_text"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:typeface="Roboto-Medium.ttf" />
+
+        <com.ctrlplusz.anytextview.AnyTextView
+            android:id="@+id/month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/day_today"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            android:text="December"
+            android:textSize="18sp"
+            app:typeface="Roboto-Light.ttf" />
+
+        <com.ctrlplusz.anytextview.AnyTextView
+            android:id="@+id/tasks_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="30dp"
+            android:text="12 tasks"
+            android:textStyle="bold"
+            app:typeface="Roboto-Medium.ttf" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/month"
+            android:layout_marginTop="-10dp">
+
+            <View
+                android:id="@+id/shadow"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/shadow" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_fab"
+                app:fab_colorNormal="@color/mauvre"
+                app:fab_colorPressed="@color/mauvrePressed"
+                app:fab_colorRipple="@color/mauvre" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header"
+        android:padding="10dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <include
+        android:id="@+id/emptyList"
+        layout="@layout/empty_list"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/container_body"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+</RelativeLayout>
