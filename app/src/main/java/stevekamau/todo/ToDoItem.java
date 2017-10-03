@@ -9,10 +9,8 @@ import io.realm.annotations.PrimaryKey;
 
 public class ToDoItem extends RealmObject {
 
-    @PrimaryKey
-
     private int id;
-
+    //@PrimaryKey
     private String title;
     private String createdAt;
     private String status;

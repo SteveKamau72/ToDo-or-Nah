@@ -13,13 +13,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.realm.Realm;
 
 
 /**
@@ -28,7 +24,7 @@ import io.realm.Realm;
 public class AddToDoFragment extends Fragment {
     @BindView(R.id.todo)
     EditText edTodo;
-    private Realm realm;
+    ToDoDB toDoDB;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,16 +32,15 @@ public class AddToDoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_to_do, container, false);
         ButterKnife.bind(this, view);
-        //get realm instance
-        this.realm = RealmController.with(this).getRealm();
+        toDoDB = new ToDoDB(getActivity());
         setViews();
         return view;
     }
 
     private void setViews() {
         edTodo.requestFocus();
-        InputMethodManager imgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     @OnClick(R.id.fab)
@@ -54,25 +49,16 @@ public class AddToDoFragment extends Fragment {
             edTodo.setError("Come on, say something!");
         } else {
             edTodo.setError(null);
-            saveToRealm();
+            saveToDB();
             hideKeyboard(getActivity());
             ((MainActivity) getActivity()).closeFragments();
         }
 
     }
 
-    private void saveToRealm() {
-        ToDoItem todoItem = new ToDoItem();
-        todoItem.setId((int) System.currentTimeMillis());
-        todoItem.setTitle(edTodo.getText().toString());
-        todoItem.setCreatedAt(((MainActivity) getActivity()).getTodayDate("yyyy/MM/dd HH:mm:ss"));
-        todoItem.setStatus("active");
-
-        // Persist your data easily
-        realm.beginTransaction();
-        realm.copyToRealm(todoItem);
-        realm.commitTransaction();
-        ((MainActivity) getActivity()).setTasksCount();
+    private void saveToDB() {
+        toDoDB.addTodo(edTodo.getText().toString(), ((MainActivity) getActivity()).getTodayDate("yyyy/MM/dd HH:mm:ss"), "active");
+        ((MainActivity) getActivity()).setAdapter();
         Toasty.success(getActivity(), "Noted!", Toast.LENGTH_LONG, true).show();
     }
 

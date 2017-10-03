@@ -3,12 +3,15 @@ package stevekamau.todo;
 import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -17,36 +20,59 @@ import io.realm.RealmResults;
  * Created by steve on 9/6/17.
  */
 
-public class ToDoAdapter extends RealmRecyclerViewAdapter<ToDoItem> {
+public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
 
     final Context context;
     private Realm realm;
     private LayoutInflater inflater;
+    private List<ToDoItem> results;
 
-    public ToDoAdapter(Context context) {
-
+    public ToDoAdapter(Context context, List<ToDoItem> results) {
         this.context = context;
+        this.results = results;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ToDoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // inflate a new card view
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_item, parent, false);
         return new ToDoViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
-        realm = RealmController.getInstance().getRealm();
-
-        // get the itme
-        final ToDoItem toDoItem = getItem(position);
+    public void onBindViewHolder(ToDoViewHolder viewHolder, final int position) {
+        Log.e("s_track_1", "onBindViewHolder");
+        // get the item
+        final ToDoItem toDoItem = results.get(position);
         // cast the generic view holder to our specific one
         final ToDoViewHolder holder = (ToDoViewHolder) viewHolder;
 
         // set the title and the snippet
         holder.textTitle.setText(toDoItem.getTitle());
-        holder.checkBox.setOnCheckedChangeListener(
+
+        holder.textTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String isActive = "";
+
+               /* RealmResults<ToDoItem> results_edit = realm.where(ToDoItem.class).findAll();
+                realm.beginTransaction();
+                results_edit.get(position).setTitle(toDoItem.getTitle());
+                results_edit.get(position).setCreatedAt(toDoItem.getCreatedAt());
+                results_edit.get(position).setStatus(isActive);
+                realm.copyToRealmOrUpdate(results_edit);
+                realm.commitTransaction();*/
+
+                /*realm.beginTransaction();
+                ToDoItem toDoItemEdit = realm.where(ToDoItem.class).equalTo("title", toDoItem.getTitle()).findFirst();
+//                toDoItemEdit.setTitle(toDoItem.getTitle());
+                toDoItemEdit.setCreatedAt(toDoItem.getCreatedAt());
+                toDoItemEdit.setStatus(isActive);
+                realm.copyToRealmOrUpdate(toDoItemEdit);
+                realm.commitTransaction();*/
+            }
+        });
+        /*holder.checkBox.setOnCheckedChangeListener(
                 new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -60,6 +86,7 @@ public class ToDoAdapter extends RealmRecyclerViewAdapter<ToDoItem> {
                             unStrikeThroughText(holder.textTitle);
                             isActive = "active";
                         }
+
                         RealmResults<ToDoItem> results = realm.where(ToDoItem.class).findAll();
                         realm.beginTransaction();
                         results.get(position).setTitle(toDoItem.getTitle());
@@ -67,11 +94,9 @@ public class ToDoAdapter extends RealmRecyclerViewAdapter<ToDoItem> {
                         results.get(position).setStatus(isActive);
                         realm.copyToRealmOrUpdate(results);
                         realm.commitTransaction();
-
                     }
                 }
-
-        );
+        );*/
         if (toDoItem.getStatus().equals("inactive")) {
             holder.textTitle.setTextColor(context.getResources().getColor(R.color.dark_grey));
             strikeThroughText(holder.textTitle);
@@ -93,10 +118,7 @@ public class ToDoAdapter extends RealmRecyclerViewAdapter<ToDoItem> {
 
     @Override
     public int getItemCount() {
-        if (getRealmAdapter() != null) {
-            return getRealmAdapter().getCount();
-        }
-        return 0;
+        return results.size();
     }
 
     public static class ToDoViewHolder extends RecyclerView.ViewHolder {

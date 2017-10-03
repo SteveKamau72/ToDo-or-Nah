@@ -77,14 +77,25 @@
 
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/recyclerView"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/header"
-        android:padding="10dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_marginTop="-30dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </RelativeLayout>
+    </ScrollView>
 
     <include
         android:id="@+id/emptyList"
@@ -93,6 +104,26 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/header"
         android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:clickable="true">
+
+        <com.ctrlplusz.anytextview.AnyTextView
+            android:id="@+id/show_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="View history"
+            android:textColor="@color/dark_grey"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:typeface="Roboto-Medium.ttf" />
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/container_body"
