@@ -152,6 +152,12 @@ public class MainActivity extends AppCompatActivity {
         createFragments(new DoneTasksFragment());
     }
 
+    @OnClick(R.id.date_layout)
+    void selectDate() {
+        createFragments((new DateFragment()));
+
+    }
+
     @Override
     public void onBackPressed() {
 

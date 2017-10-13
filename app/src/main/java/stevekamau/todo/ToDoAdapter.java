@@ -13,9 +13,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
-
 /**
  * Created by steve on 9/6/17.
  */
@@ -23,7 +20,6 @@ import io.realm.RealmResults;
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
 
     final Context context;
-    private Realm realm;
     private LayoutInflater inflater;
     private List<ToDoItem> results;
 

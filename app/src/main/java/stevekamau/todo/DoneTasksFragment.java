@@ -15,8 +15,6 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class DoneTasksFragment extends Fragment {
     private static final String TAG = DoneTasksFragment.class.getSimpleName();
