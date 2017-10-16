@@ -55,13 +55,22 @@
                 app:typeface="Roboto-Light.ttf" />
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/options"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="10dp"
+            android:src="@drawable/ic_options" />
         <com.ctrlplusz.anytextview.AnyTextView
             android:id="@+id/tasks_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:text="12 tasks"
             android:textStyle="bold"
             app:typeface="Roboto-Medium.ttf" />
@@ -100,9 +109,10 @@
         android:layout_below="@+id/header"
         android:layout_marginTop="-30dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -111,7 +121,11 @@
                 android:layout_height="match_parent"
                 android:padding="10dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-        </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+        </LinearLayout>
     </ScrollView>
 
     <include
@@ -120,31 +134,38 @@
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/header"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/button_shape"
         android:layout_alignParentBottom="true"
-        android:background="@color/white"
+        android:padding="5dp"
         android:clickable="true">
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_history" />
 
         <com.ctrlplusz.anytextview.AnyTextView
             android:id="@+id/show_history"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="10dp"
-            android:text="View history"
-            android:textColor="@color/dark_grey"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp"
+            android:text="View all Todo's"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
             app:typeface="Roboto-Medium.ttf" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/container_body"

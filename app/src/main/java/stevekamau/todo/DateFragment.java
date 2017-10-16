@@ -10,12 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.applikeysolutions.cosmocalendar.utils.SelectionType;
 import com.applikeysolutions.cosmocalendar.view.CalendarView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class DateFragment extends Fragment {
     private static final String TAG = DateFragment.class.getSimpleName();
@@ -45,14 +47,16 @@ public class DateFragment extends Fragment {
         Log.d(TAG, "onCreateView: hit");
         View rootView = inflater.inflate(R.layout.fragment_date, container, false);
         ButterKnife.bind(this, rootView);
-
+        hideKeyboard(getActivity());
         setViews();
         return rootView;
     }
 
     private void setViews() {
         calendarView.setSelectionType(SelectionType.SINGLE);
-        calendarView.setCalendarOrientation(OrientationHelper.HORIZONTAL);
+        calendarView.setCalendarOrientation(OrientationHelper.VERTICAL);
+        calendarView.setSelectedDayBackgroundColor(parentActivity.getResources().getColor(R.color.mauvre));
+        calendarView.onDaySelected();
     }
 
     @Override
@@ -81,6 +85,22 @@ public class DateFragment extends Fragment {
         super.onDestroyView();
     }
 
+
+    @OnClick(R.id.cancel)
+    void close() {
+        ((MainActivity) getActivity()).closeFragments();
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 
     @Override
     public void onDestroy() {

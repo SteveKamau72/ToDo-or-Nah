@@ -3,4 +3,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_settings">Settings</string>
+    <string name="give_us_feeback">Give us feedback</string>
+    <string name="share_app">Tell a friend</string>
+    <string name="rate_app">Rate the app</string>
 </resources>

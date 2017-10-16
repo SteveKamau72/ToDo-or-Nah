@@ -57,7 +57,8 @@ public class AddToDoFragment extends Fragment {
     }
 
     private void saveToDB() {
-        toDoDB.addTodo(edTodo.getText().toString(), ((MainActivity) getActivity()).getTodayDate("yyyy/MM/dd HH:mm:ss"), "active");
+        toDoDB.addTodo(edTodo.getText().toString(),
+                TimeDateUtils.getTodayDate("yyyy/MM/dd HH:mm:ss"), "active");
         ((MainActivity) getActivity()).setAdapter();
         Toasty.success(getActivity(), "Noted!", Toast.LENGTH_LONG, true).show();
     }
@@ -77,6 +78,18 @@ public class AddToDoFragment extends Fragment {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    @OnClick(R.id.date_layout)
+    void selectDate() {
+        ((MainActivity) getActivity()).createFragments((new DateFragment()));
+
+    }
+
+    @Override
+    public void onResume() {
+        edTodo.setFocusable(true);
+        super.onResume();
     }
 
 }

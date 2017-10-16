@@ -1,20 +1,21 @@
 package stevekamau.todo;
 
+import android.app.Activity;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     TextView tvMonth;
     @BindView(R.id.tasks_no)
     TextView tvTaskNo;
+    @BindView(R.id.emptyList)
+    LinearLayout emptyList;
     ToDoAdapter todoAdapter;
     FragmentTransaction fragmentTransaction;
     List<ToDoItem> activeTodoItemsList = new ArrayList<>();
@@ -45,10 +48,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setViews() {
-        tvDayToday.setText(getTodayDate("EEEE") + " " + getTodayDate("dd"));
-        tvMonth.setText(getTodayDate("MMMM"));
-        setupRecycler();
-        setAdapter();
+        tvDayToday.setText(TimeDateUtils.getTodayDate("EEEE") + " " + TimeDateUtils.getTodayDate("dd"));
+        tvMonth.setText(TimeDateUtils.getTodayDate("MMMM"));
+        activeTodoItemsList = toDoDB.getTodayToDoItems("active");
+        setTasksCount();
+        if (activeTodoItemsList.size() > 0) {
+            setupRecycler();
+            setAdapter();
+            emptyList.setVisibility(View.GONE);
+        } else {
+            emptyList.setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick(R.id.fab)
@@ -117,19 +127,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setAdapter() {
-        activeTodoItemsList = toDoDB.getToDoItems("active");
         // create an empty adapter and add it to the recycler view
         todoAdapter = new ToDoAdapter(this, activeTodoItemsList);
         recyclerView.setAdapter(todoAdapter);
         //todoAdapter.notifyDataSetChanged();
-        setTasksCount();
     }
 
     public void setTasksCount() {
         tvTaskNo.setText(activeTodoItemsList.size() + " tasks");
     }
 
-    private void createFragments(Fragment fragment) {
+    public void createFragments(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
@@ -138,24 +146,23 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public String getTodayDate(String format) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        return sdf.format(new Date());
-    }
-
     public void closeFragments() {
-        createFragments(new EmptyFragment());
+        onBackPressed();
     }
 
     @OnClick(R.id.show_history)
     void showHistory() {
-        createFragments(new DoneTasksFragment());
+        createFragments((new AllToDOsFragement()));
     }
 
     @OnClick(R.id.date_layout)
     void selectDate() {
-        createFragments((new DateFragment()));
+        createFragments((new AllToDOsFragement()));
+    }
 
+    @OnClick(R.id.options)
+    void displayOptions() {
+        createFragments((new OptionsFragment()));
     }
 
     @Override
@@ -167,6 +174,29 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onResume() {
+        hideKeyboard(this);
+        super.onResume();
+    }
+
+    @Override
+    public void onStart() {
+        hideKeyboard(this);
+        super.onStart();
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 }

@@ -6,8 +6,8 @@
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/ic_no_tasks" />
 
@@ -16,9 +16,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Nothing To Do"
-        android:textColor="@color/grey"
+        android:text="Zilch!"
+        android:textColor="@color/title_text"
         android:textSize="20sp"
         android:textStyle="bold"
         app:typeface="Roboto-Medium.ttf" />
+
+    <com.ctrlplusz.anytextview.AnyTextView
+        android:id="@+id/sub_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:text="It's cold and empty here. Add your todo's for today."
+        android:textColor="@color/grey"
+        android:textSize="16sp"
+        app:typeface="Roboto-Light.ttf" />
 </LinearLayout>

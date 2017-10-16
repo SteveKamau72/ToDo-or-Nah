@@ -1,16 +1,12 @@
 package stevekamau.todo;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
-
 /**
  * Created by steve on 9/6/17.
  */
 
-public class ToDoItem extends RealmObject {
+public class ToDoItem {
 
     private int id;
-    //@PrimaryKey
     private String title;
     private String createdAt;
     private String status;

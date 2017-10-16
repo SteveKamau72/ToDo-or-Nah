@@ -1,34 +1,27 @@
 package stevekamau.todo;/**
- * Created by steve on 9/26/17.
+ * Created by steve on 10/16/17.
  */
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DoneTasksFragment extends Fragment {
-    private static final String TAG = DoneTasksFragment.class.getSimpleName();
+public class OptionsFragment extends Fragment {
+    private static final String TAG = OptionsFragment.class.getSimpleName();
     Activity parentActivity;
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
-    ToDoDB toDoDB;
-    ToDoAdapter todoAdapter;
 
-    public DoneTasksFragment() {
+    public OptionsFragment() {
     }
 
-    public static DoneTasksFragment newInstance() {
-        DoneTasksFragment fragment = new DoneTasksFragment();
+    public static OptionsFragment newInstance() {
+        OptionsFragment fragment = new OptionsFragment();
         return fragment;
     }
 
@@ -43,34 +36,14 @@ public class DoneTasksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: hit");
-        View rootView = inflater.inflate(R.layout.fragment_done_tasks, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_options, container, false);
         ButterKnife.bind(this, rootView);
-        toDoDB = new ToDoDB(parentActivity);
+
         setViews();
         return rootView;
     }
 
     private void setViews() {
-        setupRecycler();
-        setAdapter();
-    }
-
-    private void setupRecycler() {
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        recyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager since the cards are vertically scrollable
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(parentActivity);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-    }
-
-    public void setAdapter() {
-        // create an empty adapter and add it to the recycler view
-        todoAdapter = new ToDoAdapter(parentActivity, toDoDB.getTodayToDoItems("inactive"));
-        recyclerView.setAdapter(todoAdapter);
-        todoAdapter.notifyDataSetChanged();
     }
 
     @OnClick(R.id.cancel)

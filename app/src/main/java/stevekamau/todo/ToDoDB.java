@@ -5,8 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +20,7 @@ public class ToDoDB extends SQLiteOpenHelper {
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_CREATED_AT = "created_at";
     public static final String COLUMN_STATUS = "status";
-
+    private ArrayList<String> datesArrayList = new ArrayList<>();
     // Database Version
     private static final int DATABASE_VERSION = 1;
 
@@ -55,7 +55,7 @@ public class ToDoDB extends SQLiteOpenHelper {
         db.insertWithOnConflict(TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
-    public ArrayList<ToDoItem> getToDoItems(String variant) {
+    public ArrayList<ToDoItem> getTodayToDoItems(String variant) {
         ArrayList<ToDoItem> toDoItemArrayList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = null;
@@ -71,7 +71,10 @@ public class ToDoDB extends SQLiteOpenHelper {
             todoModel.setTitle(res.getString(res.getColumnIndex("title")));
             todoModel.setCreatedAt(res.getString(res.getColumnIndex("created_at")));
             todoModel.setStatus(res.getString(res.getColumnIndex("status")));
-            toDoItemArrayList.add(0, todoModel);
+            if (TimeDateUtils.formatDate(todoModel.getCreatedAt(), "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd")
+                    .equals(TimeDateUtils.getTodayDate("yyyy/MM/dd"))) {
+                toDoItemArrayList.add(0, todoModel);
+            }
             res.moveToNext();
         }
         res.close();
@@ -84,5 +87,44 @@ public class ToDoDB extends SQLiteOpenHelper {
         cv.put("status", status);
         db.update(TABLE_NAME, cv, "title = ?", new String[]{title});
     }
+
+    public ArrayList<String> getAllToDosDates() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * from  " + TABLE_NAME, null);
+
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            String dateOnly = TimeDateUtils.formatDate(res.getString(res.getColumnIndex("created_at")),
+                    "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd");
+            if (!datesArrayList.contains(dateOnly)) {
+                datesArrayList.add(0, dateOnly);
+            }
+            res.moveToNext();
+        }
+        res.close();
+        return datesArrayList;
+    }
+
+    public ArrayList<ToDoItem> getToDoItemGrouped(String date) throws ParseException {
+        ArrayList<ToDoItem> toDoItemArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * from  " + TABLE_NAME, null);
+
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            ToDoItem todoModel = new ToDoItem();
+            todoModel.setTitle(res.getString(res.getColumnIndex("title")));
+            todoModel.setCreatedAt(res.getString(res.getColumnIndex("created_at")));
+            todoModel.setStatus(res.getString(res.getColumnIndex("status")));
+            if (TimeDateUtils.formatDate(todoModel.getCreatedAt(),
+                    "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd").equals(date)) {
+                toDoItemArrayList.add(todoModel);
+            }
+            res.moveToNext();
+        }
+        res.close();
+        return toDoItemArrayList;
+    }
+
 
 }

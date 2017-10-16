@@ -8,9 +8,9 @@
 
     <ImageView
         android:id="@+id/cancel"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="5dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:padding="10dp"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:src="@drawable/ic_cancel" />
@@ -20,7 +20,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/cancel"
-        android:padding="20dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="5dp"
         android:text="Add To Do"
         android:textColor="@color/title_text"
         android:textSize="30sp"
@@ -35,6 +38,70 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:focusable="true" />
+
+    <LinearLayout
+        android:id="@+id/date_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/todo"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/calendar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_calendar" />
+
+        <com.ctrlplusz.anytextview.AnyTextView
+            android:id="@+id/month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Today"
+            android:textSize="18sp"
+            app:typeface="Roboto-Light.ttf" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/todo"
+        android:layout_marginTop="7dp"
+        android:layout_toEndOf="@+id/date_layout"
+        android:layout_toRightOf="@+id/date_layout"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp">
+
+        <com.github.zagum.switchicon.SwitchIconView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            app:si_animation_duration="500"
+            app:si_disabled_alpha=".3"
+            app:si_disabled_color="#b7b7b7"
+            app:si_enabled="false"
+            app:si_no_dash="true"
+            app:si_tint_color="#ff3c00"
+            app:srcCompat="@drawable/ic_reminder" />
+
+        <com.ctrlplusz.anytextview.AnyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="Reminder"
+            android:textSize="18sp"
+            app:typeface="Roboto-Light.ttf" />
+    </LinearLayout>
 
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/fab"

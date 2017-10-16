@@ -9,7 +9,9 @@
     <color name="mauvre">#F56954</color>
     <color name="mauvrePressed">#be1f07</color>
     <color name="title_text">#5A5D9D</color>
+    <color name="color_title_text">#acffffff</color>
     <color name="grey">#828282</color>
     <color name="black">#000</color>
     <color name="dark_grey">#5e5e5e</color>
+    <color name="light_grey">#ccc</color>
 </resources>

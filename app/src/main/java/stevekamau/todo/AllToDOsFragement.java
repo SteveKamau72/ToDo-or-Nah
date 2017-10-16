@@ -1,5 +1,5 @@
 package stevekamau.todo;/**
- * Created by steve on 9/26/17.
+ * Created by steve on 10/13/17.
  */
 
 import android.app.Activity;
@@ -12,23 +12,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
-public class DoneTasksFragment extends Fragment {
-    private static final String TAG = DoneTasksFragment.class.getSimpleName();
+public class AllToDOsFragement extends Fragment {
+    private static final String TAG = AllToDOsFragement.class.getSimpleName();
     Activity parentActivity;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     ToDoDB toDoDB;
-    ToDoAdapter todoAdapter;
+    private SectionedRecyclerViewAdapter sectionAdapter;
+    ArrayList<String> groupedDatesList = new ArrayList<>();
 
-    public DoneTasksFragment() {
+    public AllToDOsFragement() {
     }
 
-    public static DoneTasksFragment newInstance() {
-        DoneTasksFragment fragment = new DoneTasksFragment();
+    public static AllToDOsFragement newInstance() {
+        AllToDOsFragement fragment = new AllToDOsFragement();
         return fragment;
     }
 
@@ -43,7 +48,7 @@ public class DoneTasksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: hit");
-        View rootView = inflater.inflate(R.layout.fragment_done_tasks, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_all_to_dos, container, false);
         ButterKnife.bind(this, rootView);
         toDoDB = new ToDoDB(parentActivity);
         setViews();
@@ -51,37 +56,39 @@ public class DoneTasksFragment extends Fragment {
     }
 
     private void setViews() {
-        setupRecycler();
-        setAdapter();
-    }
-
-    private void setupRecycler() {
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(parentActivity);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
+        groupedDatesList = toDoDB.getAllToDosDates();
+        sectionAdapter = new SectionedRecyclerViewAdapter();
+        Log.e("grouped_dates", String.valueOf(groupedDatesList));
 
-        // use a linear layout manager since the cards are vertically scrollable
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(parentActivity);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
+        for (int i = 0; i < groupedDatesList.size(); i++) {
+            try {
+                Log.e("grouped_todos", String.valueOf(toDoDB.getToDoItemGrouped(groupedDatesList.get(i))));
+
+                HeaderRecyclerViewSection headerSection = new HeaderRecyclerViewSection(
+                        TimeDateUtils.formatDate(groupedDatesList.get(i),
+                                "yyyy/MM/dd", "EEEE dd, MMMM"),
+                        toDoDB.getToDoItemGrouped(groupedDatesList.get(i)));
+                sectionAdapter.addSection(headerSection);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        recyclerView.setAdapter(sectionAdapter);
     }
 
-    public void setAdapter() {
-        // create an empty adapter and add it to the recycler view
-        todoAdapter = new ToDoAdapter(parentActivity, toDoDB.getTodayToDoItems("inactive"));
-        recyclerView.setAdapter(todoAdapter);
-        todoAdapter.notifyDataSetChanged();
-    }
-
-    @OnClick(R.id.cancel)
-    void close() {
-        ((MainActivity) getActivity()).closeFragments();
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated: hit");
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @OnClick(R.id.cancel)
+    void close() {
+        parentActivity.onBackPressed();
     }
 
     @Override
