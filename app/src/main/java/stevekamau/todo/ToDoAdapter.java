@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -46,53 +45,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         // set the title and the snippet
         holder.textTitle.setText(toDoItem.getTitle());
 
-        holder.textTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String isActive = "";
-
-               /* RealmResults<ToDoItem> results_edit = realm.where(ToDoItem.class).findAll();
-                realm.beginTransaction();
-                results_edit.get(position).setTitle(toDoItem.getTitle());
-                results_edit.get(position).setCreatedAt(toDoItem.getCreatedAt());
-                results_edit.get(position).setStatus(isActive);
-                realm.copyToRealmOrUpdate(results_edit);
-                realm.commitTransaction();*/
-
-                /*realm.beginTransaction();
-                ToDoItem toDoItemEdit = realm.where(ToDoItem.class).equalTo("title", toDoItem.getTitle()).findFirst();
-//                toDoItemEdit.setTitle(toDoItem.getTitle());
-                toDoItemEdit.setCreatedAt(toDoItem.getCreatedAt());
-                toDoItemEdit.setStatus(isActive);
-                realm.copyToRealmOrUpdate(toDoItemEdit);
-                realm.commitTransaction();*/
-            }
-        });
-        /*holder.checkBox.setOnCheckedChangeListener(
-                new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        String isActive = "";
-                        if (isChecked) {
-                            holder.textTitle.setTextColor(context.getResources().getColor(R.color.dark_grey));
-                            strikeThroughText(holder.textTitle);
-                            isActive = "inactive";
-                        } else {
-                            holder.textTitle.setTextColor(context.getResources().getColor(R.color.black));
-                            unStrikeThroughText(holder.textTitle);
-                            isActive = "active";
-                        }
-
-                        RealmResults<ToDoItem> results = realm.where(ToDoItem.class).findAll();
-                        realm.beginTransaction();
-                        results.get(position).setTitle(toDoItem.getTitle());
-                        results.get(position).setCreatedAt(toDoItem.getCreatedAt());
-                        results.get(position).setStatus(isActive);
-                        realm.copyToRealmOrUpdate(results);
-                        realm.commitTransaction();
-                    }
-                }
-        );*/
         if (toDoItem.getStatus().equals("inactive")) {
             holder.textTitle.setTextColor(context.getResources().getColor(R.color.dark_grey));
             strikeThroughText(holder.textTitle);

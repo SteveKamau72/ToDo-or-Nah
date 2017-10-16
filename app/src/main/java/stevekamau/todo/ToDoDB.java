@@ -20,9 +20,10 @@ public class ToDoDB extends SQLiteOpenHelper {
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_CREATED_AT = "created_at";
     public static final String COLUMN_STATUS = "status";
+    public static final String COLUMN_REMINDER = "reminder";
     private ArrayList<String> datesArrayList = new ArrayList<>();
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public ToDoDB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,9 +32,10 @@ public class ToDoDB extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TODO_TABLE = "CREATE TABLE " + TABLE_NAME + "("
-                + COLUMN_ID + " INTEGER,"
-                + COLUMN_TITLE + " TEXT unique,"
-                + COLUMN_CREATED_AT + " TEXT unique,"
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_TITLE + " TEXT,"
+                + COLUMN_CREATED_AT + " TEXT,"
+                + COLUMN_REMINDER + " TEXT,"
                 + COLUMN_STATUS + " TEXT" + ")";
 
         db.execSQL(CREATE_TODO_TABLE);
@@ -46,12 +48,13 @@ public class ToDoDB extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addTodo(String title, String created_at, String status) {
+    public void addTodo(String title, String created_at, String status, Boolean reminder) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("title", title);
         contentValues.put("created_at", created_at);
         contentValues.put("status", status);
+        contentValues.put("reminder", reminder);
         db.insertWithOnConflict(TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
@@ -81,11 +84,11 @@ public class ToDoDB extends SQLiteOpenHelper {
         return toDoItemArrayList;
     }
 
-    public void setToDoAsDone(String status, String title) {
+    public void setToDoAsDone(String status, int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("status", status);
-        db.update(TABLE_NAME, cv, "title = ?", new String[]{title});
+        db.update(TABLE_NAME, cv, "title = ?", new String[]{String.valueOf(id)});
     }
 
     public ArrayList<String> getAllToDosDates() {
@@ -120,6 +123,24 @@ public class ToDoDB extends SQLiteOpenHelper {
                     "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd").equals(date)) {
                 toDoItemArrayList.add(todoModel);
             }
+            res.moveToNext();
+        }
+        res.close();
+        return toDoItemArrayList;
+    }
+
+    public ArrayList<ToDoItem> getAllToDoItems() {
+        ArrayList<ToDoItem> toDoItemArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * from  " + TABLE_NAME, null);
+
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            ToDoItem todoModel = new ToDoItem();
+            todoModel.setTitle(res.getString(res.getColumnIndex("title")));
+            todoModel.setCreatedAt(res.getString(res.getColumnIndex("created_at")));
+            todoModel.setStatus(res.getString(res.getColumnIndex("status")));
+            toDoItemArrayList.add(todoModel);
             res.moveToNext();
         }
         res.close();

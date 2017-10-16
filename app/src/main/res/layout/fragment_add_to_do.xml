@@ -60,7 +60,7 @@
             android:src="@drawable/ic_calendar" />
 
         <com.ctrlplusz.anytextview.AnyTextView
-            android:id="@+id/month"
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -70,10 +70,13 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/reminder_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/todo"
         android:layout_marginTop="7dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:layout_below="@+id/todo"
         android:layout_toEndOf="@+id/date_layout"
         android:layout_toRightOf="@+id/date_layout"
         android:orientation="horizontal"
@@ -82,22 +85,22 @@
         android:paddingTop="10dp">
 
         <com.github.zagum.switchicon.SwitchIconView
+            android:id="@+id/switchIconView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            app:si_animation_duration="500"
-            app:si_disabled_alpha=".3"
-            app:si_disabled_color="#b7b7b7"
+            android:layout_gravity="center"
+            app:si_disabled_alpha=".5"
+            app:si_disabled_color="@color/grey"
             app:si_enabled="false"
-            app:si_no_dash="true"
-            app:si_tint_color="#ff3c00"
+            app:si_tint_color="@color/mauvre"
             app:srcCompat="@drawable/ic_reminder" />
 
         <com.ctrlplusz.anytextview.AnyTextView
+            android:id="@+id/reminder_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:text="Reminder"
             android:textSize="18sp"
             app:typeface="Roboto-Light.ttf" />

@@ -28,6 +28,8 @@ public class AllToDOsFragement extends Fragment {
     ToDoDB toDoDB;
     private SectionedRecyclerViewAdapter sectionAdapter;
     ArrayList<String> groupedDatesList = new ArrayList<>();
+    ArrayList<ToDoItem> toDosList = new ArrayList<>();
+    ArrayList<ToDoItem> allToDosList = new ArrayList<>();
 
     public AllToDOsFragement() {
     }
@@ -59,6 +61,7 @@ public class AllToDOsFragement extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(parentActivity);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
+        allToDosList = toDoDB.getAllToDoItems();
         groupedDatesList = toDoDB.getAllToDosDates();
         sectionAdapter = new SectionedRecyclerViewAdapter();
         Log.e("grouped_dates", String.valueOf(groupedDatesList));
@@ -66,11 +69,11 @@ public class AllToDOsFragement extends Fragment {
         for (int i = 0; i < groupedDatesList.size(); i++) {
             try {
                 Log.e("grouped_todos", String.valueOf(toDoDB.getToDoItemGrouped(groupedDatesList.get(i))));
-
+                toDosList = toDoDB.getToDoItemGrouped(groupedDatesList.get(i));
                 HeaderRecyclerViewSection headerSection = new HeaderRecyclerViewSection(
                         TimeDateUtils.formatDate(groupedDatesList.get(i),
-                                "yyyy/MM/dd", "EEEE dd, MMMM"),
-                        toDoDB.getToDoItemGrouped(groupedDatesList.get(i)));
+                                "yyyy/MM/dd", "EEEE dd, MMMM"), toDosList
+                        , parentActivity);
                 sectionAdapter.addSection(headerSection);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -78,7 +81,6 @@ public class AllToDOsFragement extends Fragment {
         }
         recyclerView.setAdapter(sectionAdapter);
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

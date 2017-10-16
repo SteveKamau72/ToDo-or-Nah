@@ -29,4 +29,18 @@ public class TimeDateUtils {
         format = new SimpleDateFormat(endFormat, Locale.getDefault());
         return format.format(newDate);
     }
+
+    public static String formatIntoAmPm(String dateString) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdfs = new SimpleDateFormat("hh:mm aa");
+        Date dt = null;
+        try {
+            dt = sdf.parse(dateString);
+            System.out.println("Time Display: " + sdfs.format(dt)); // <-- I got result here
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return sdfs.format(dt);
+    }
 }

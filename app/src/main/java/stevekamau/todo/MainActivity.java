@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             status = "active";
         }
-        toDoDB.setToDoAsDone(status, activeTodoItemsList.get(position).getTitle());
+        toDoDB.setToDoAsDone(status, activeTodoItemsList.get(position).getId());
     }
 
     private void strikeThroughText(TextView textView) {
@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setAdapter() {
+        activeTodoItemsList = toDoDB.getTodayToDoItems("active");
         // create an empty adapter and add it to the recycler view
         todoAdapter = new ToDoAdapter(this, activeTodoItemsList);
         recyclerView.setAdapter(todoAdapter);
@@ -167,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
+        setAdapter();
         int fragments = getSupportFragmentManager().getBackStackEntryCount();
         if (fragments == 0) {
             finish();
