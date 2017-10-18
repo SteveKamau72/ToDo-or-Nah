@@ -16,14 +16,33 @@
         android:layout_gravity="center_vertical"
         android:clickable="false" />
 
-    <com.ctrlplusz.anytextview.AnyTextView
-        android:id="@+id/title"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        android:text="December"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:typeface="Roboto-Light.ttf" />
+        android:orientation="horizontal">
+
+        <com.ctrlplusz.anytextview.AnyTextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/reminder_icon"
+            android:gravity="start"
+            android:text="cbshcbhscb"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:typeface="Roboto-Light.ttf" />
+
+        <ImageView
+            android:id="@+id/reminder_icon"
+            android:layout_width="30dp"
+            android:visibility="invisible"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_reminder_set" />
+    </RelativeLayout>
+
 </LinearLayout>

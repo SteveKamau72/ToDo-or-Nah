@@ -1,5 +1,6 @@
 package stevekamau.todo;
 
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -71,9 +72,11 @@ public class ToDoDB extends SQLiteOpenHelper {
         res.moveToFirst();
         while (!res.isAfterLast()) {
             ToDoItem todoModel = new ToDoItem();
+            todoModel.setId(res.getInt(res.getColumnIndex("id")));
             todoModel.setTitle(res.getString(res.getColumnIndex("title")));
             todoModel.setCreatedAt(res.getString(res.getColumnIndex("created_at")));
             todoModel.setStatus(res.getString(res.getColumnIndex("status")));
+            todoModel.setReminder(res.getString(res.getColumnIndex("reminder")));
             if (TimeDateUtils.formatDate(todoModel.getCreatedAt(), "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd")
                     .equals(TimeDateUtils.getTodayDate("yyyy/MM/dd"))) {
                 toDoItemArrayList.add(0, todoModel);
@@ -116,9 +119,11 @@ public class ToDoDB extends SQLiteOpenHelper {
         res.moveToFirst();
         while (!res.isAfterLast()) {
             ToDoItem todoModel = new ToDoItem();
+            todoModel.setId(res.getInt(res.getColumnIndex("id")));
             todoModel.setTitle(res.getString(res.getColumnIndex("title")));
             todoModel.setCreatedAt(res.getString(res.getColumnIndex("created_at")));
             todoModel.setStatus(res.getString(res.getColumnIndex("status")));
+            todoModel.setReminder(res.getString(res.getColumnIndex("reminder")));
             if (TimeDateUtils.formatDate(todoModel.getCreatedAt(),
                     "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd").equals(date)) {
                 toDoItemArrayList.add(todoModel);
@@ -137,9 +142,11 @@ public class ToDoDB extends SQLiteOpenHelper {
         res.moveToFirst();
         while (!res.isAfterLast()) {
             ToDoItem todoModel = new ToDoItem();
+            todoModel.setId(res.getInt(res.getColumnIndex("id")));
             todoModel.setTitle(res.getString(res.getColumnIndex("title")));
             todoModel.setCreatedAt(res.getString(res.getColumnIndex("created_at")));
             todoModel.setStatus(res.getString(res.getColumnIndex("status")));
+            todoModel.setReminder(res.getString(res.getColumnIndex("reminder")));
             toDoItemArrayList.add(todoModel);
             res.moveToNext();
         }
@@ -147,5 +154,36 @@ public class ToDoDB extends SQLiteOpenHelper {
         return toDoItemArrayList;
     }
 
+    public int deleteToDo(String todo_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int deletedVal = -1;
+        try {
+            deletedVal = db.delete(TABLE_NAME, COLUMN_ID + "= '" + todo_id + "'", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        db.close();
+        return deletedVal;
+    }
 
+    public ArrayList<ToDoItem> getToDoItemById(String selectedToDoItemId) {
+        ArrayList<ToDoItem> toDoItemArrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * from  " + TABLE_NAME + " WHERE " + COLUMN_ID + " = '" + selectedToDoItemId + "'", null);
+
+        res.moveToFirst();
+        while (!res.isAfterLast()) {
+            ToDoItem todoModel = new ToDoItem();
+            todoModel.setId(res.getInt(res.getColumnIndex("id")));
+            todoModel.setTitle(res.getString(res.getColumnIndex("title")));
+            todoModel.setCreatedAt(res.getString(res.getColumnIndex("created_at")));
+            todoModel.setStatus(res.getString(res.getColumnIndex("status")));
+            todoModel.setReminder(res.getString(res.getColumnIndex("reminder")));
+            toDoItemArrayList.add(todoModel);
+            res.moveToNext();
+        }
+        res.close();
+        return toDoItemArrayList;
+
+    }
 }

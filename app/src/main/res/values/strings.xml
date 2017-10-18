@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">"ToDo or Nah"</string>
+    <string name="app_name">"ToDo-or-Nah"</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -7,4 +7,7 @@
     <string name="give_us_feeback">Give us feedback</string>
     <string name="share_app">Tell a friend</string>
     <string name="rate_app">Rate the app</string>
+    <string name="delete">Delete</string>
+    <string name="add_reminder">Add Reminder</string>
+    <string name="edit">Edit</string>
 </resources>

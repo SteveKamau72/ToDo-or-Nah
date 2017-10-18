@@ -1,0 +1,120 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="stevekamau.todo.AddToDoFragment">
+
+    <ImageView
+        android:id="@+id/cancel"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:padding="10dp"
+        android:src="@drawable/ic_cancel" />
+
+    <com.ctrlplusz.anytextview.AnyTextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cancel"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="5dp"
+        android:text="Edit To Do"
+        android:textColor="@color/title_text"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:typeface="Roboto-Medium.ttf" />
+
+    <EditText
+        android:id="@+id/todo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:focusable="true" />
+
+    <LinearLayout
+        android:id="@+id/date_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/todo"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/calendar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_calendar" />
+
+        <com.ctrlplusz.anytextview.AnyTextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Today"
+            android:textSize="18sp"
+            app:typeface="Roboto-Light.ttf" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/reminder_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/todo"
+        android:layout_marginTop="7dp"
+        android:layout_toEndOf="@+id/date_layout"
+        android:layout_toRightOf="@+id/date_layout"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp">
+
+        <com.github.zagum.switchicon.SwitchIconView
+            android:id="@+id/switchIconView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:si_disabled_alpha=".5"
+            app:si_disabled_color="@color/grey"
+            app:si_enabled="false"
+            app:si_tint_color="@color/mauvre"
+            app:srcCompat="@drawable/ic_reminder" />
+
+        <com.ctrlplusz.anytextview.AnyTextView
+            android:id="@+id/reminder_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:text="Reminder"
+            android:textSize="18sp"
+            app:typeface="Roboto-Light.ttf" />
+    </LinearLayout>
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_save"
+        app:fab_colorNormal="@color/mauvre"
+        app:fab_colorPressed="@color/mauvrePressed"
+        app:fab_colorRipple="@color/mauvre" />
+</RelativeLayout>

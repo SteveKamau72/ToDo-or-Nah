@@ -1,5 +1,6 @@
-package stevekamau.todo;
-
+package stevekamau.todo;/**
+ * Created by steve on 10/18/17.
+ */
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -24,6 +25,7 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -32,11 +34,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class AddToDoFragment extends Fragment implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+public class EditToDoFragment extends Fragment implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+    private static final String TAG = EditToDoFragment.class.getSimpleName();
     @BindView(R.id.todo)
     EditText edTodo;
     @BindView(R.id.switchIconView)
@@ -49,22 +48,53 @@ public class AddToDoFragment extends Fragment implements TimePickerDialog.OnTime
     Activity parentActivity;
     String selectedDate, selectedTime;
     Boolean reminder = false;
+    ArrayList<ToDoItem> toDoItemArrayList = new ArrayList<>();
+
+    public EditToDoFragment() {
+    }
+
+    public static EditToDoFragment newInstance() {
+        EditToDoFragment fragment = new EditToDoFragment();
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate: hit");
+        super.onCreate(savedInstanceState);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_to_do, container, false);
-        ButterKnife.bind(this, view);
+        Log.d(TAG, "onCreateView: hit");
+        View rootView = inflater.inflate(R.layout.fragment_edit_todo, container, false);
+        ButterKnife.bind(this, rootView);
         toDoDB = new ToDoDB(getActivity());
         setViews();
-        return view;
+        return rootView;
     }
 
     private void setViews() {
-        selectedDate = TimeDateUtils.getTodayDate("yyyy/MM/dd");
-        selectedTime = TimeDateUtils.getTodayDate("HH:mm:ss");
+        toDoItemArrayList = toDoDB.getToDoItemById(((MainActivity) getActivity()).getSelectedToDoItemId());
+        selectedDate = TimeDateUtils.formatDate(toDoItemArrayList.get(0).getCreatedAt(),
+                "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd");
+        selectedTime = TimeDateUtils.formatDate(toDoItemArrayList.get(0).getCreatedAt(),
+                "yyyy/MM/dd HH:mm:ss", "HH:mm:ss");
+        tvDate.setText(TimeDateUtils.formatDate(selectedDate, "yyyy/MM/dd", "EE dd, MMM"));
+        edTodo.setText(toDoItemArrayList.get(0).getTitle());
         edTodo.requestFocus();
+
+
+        if (toDoItemArrayList.get(0).getReminder().equals("1")) {
+            reminder = true;
+            reminderSwitchIcon.setIconEnabled(true);
+            tvReminderTime.setText(TimeDateUtils.formatIntoAmPm(selectedTime));
+        } else {
+            reminder = false;
+            reminderSwitchIcon.setIconEnabled(false);
+        }
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
@@ -97,16 +127,16 @@ public class AddToDoFragment extends Fragment implements TimePickerDialog.OnTime
     private void setReminderAlarm(String dateTime) {
         Log.e("time_set", selectedDate + " " + selectedTime);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault());
+        Date date = null;
         try {
-            Date date = (Date) formatter.parse(dateTime);
+            date = (Date) formatter.parse(dateTime);
             Intent intentAlarm = new Intent(parentActivity, AlarmReceiver.class);
             intentAlarm.putExtra("todo", edTodo.getText().toString());
             // create the object
             AlarmManager alarmManager = (AlarmManager) parentActivity.getSystemService(Context.ALARM_SERVICE);
-            final int broadcast_id = (int) date.getTime();
+            final int broadcast_id = 0;
             //set the alarm for particular time
-            alarmManager.set(AlarmManager.RTC_WAKEUP, date.getTime(), PendingIntent.getBroadcast(parentActivity,
-                    broadcast_id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
+            alarmManager.set(AlarmManager.RTC_WAKEUP, date.getTime(), PendingIntent.getBroadcast(parentActivity, broadcast_id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -154,7 +184,7 @@ public class AddToDoFragment extends Fragment implements TimePickerDialog.OnTime
         hideKeyboard(parentActivity);
         Calendar now = Calendar.getInstance();
         DatePickerDialog dpd = DatePickerDialog.newInstance(
-                AddToDoFragment.this,
+                EditToDoFragment.this,
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH)
@@ -166,7 +196,7 @@ public class AddToDoFragment extends Fragment implements TimePickerDialog.OnTime
         hideKeyboard(parentActivity);
         Calendar now = Calendar.getInstance();
         TimePickerDialog tpd = TimePickerDialog.newInstance(
-                AddToDoFragment.this,
+                EditToDoFragment.this,
                 now.get(Calendar.HOUR_OF_DAY),
                 now.get(Calendar.MINUTE),
                 false
@@ -198,10 +228,35 @@ public class AddToDoFragment extends Fragment implements TimePickerDialog.OnTime
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        Log.d(TAG, "onActivityCreated: hit");
+        super.onActivityCreated(savedInstanceState);
+    }
+
+
+    @Override
+    public void onPause() {
+        Log.d(TAG, "onPause: hit");
+        super.onPause();
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        Log.d(TAG, "onDestroyView: hit");
+        super.onDestroyView();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy: hit");
+        super.onDestroy();
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         parentActivity = activity;
     }
-
-
-}
+} 

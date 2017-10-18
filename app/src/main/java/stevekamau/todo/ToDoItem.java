@@ -10,6 +10,7 @@ public class ToDoItem {
     private String title;
     private String createdAt;
     private String status;
+    private String reminder;
 
     public String getTitle() {
         return title;
@@ -44,4 +45,11 @@ public class ToDoItem {
         this.id = id;
     }
 
+    public String getReminder() {
+        return reminder;
+    }
+
+    public void setReminder(String reminder) {
+        this.reminder = reminder;
+    }
 }
