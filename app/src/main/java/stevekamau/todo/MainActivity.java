@@ -211,9 +211,11 @@ public class MainActivity extends AppCompatActivity {
             Date date = (Date) formatter.parse(toDoDB.getToDoItemById(String.valueOf(todo_id)).get(0).
                     getCreatedAt());
             final int broadcast_id = (int) date.getTime();
-            PendingIntent mAlarmPendingIntent = PendingIntent.getActivity(this, broadcast_id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
+            Log.e("broadcast_id_", "" + broadcast_id);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    getApplicationContext(), broadcast_id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager aManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            aManager.cancel(mAlarmPendingIntent);
+            aManager.cancel(pendingIntent);
 
             //delete from db
             toDoDB.deleteToDo(String.valueOf(todo_id));

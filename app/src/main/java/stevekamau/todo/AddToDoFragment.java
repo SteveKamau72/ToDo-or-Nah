@@ -104,10 +104,11 @@ public class AddToDoFragment extends Fragment implements TimePickerDialog.OnTime
             // create the object
             AlarmManager alarmManager = (AlarmManager) parentActivity.getSystemService(Context.ALARM_SERVICE);
             final int broadcast_id = (int) date.getTime();
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    parentActivity, broadcast_id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
             //set the alarm for particular time
-            alarmManager.set(AlarmManager.RTC_WAKEUP, date.getTime(), PendingIntent.getBroadcast(parentActivity,
-                    broadcast_id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT));
-
+            alarmManager.set(AlarmManager.RTC_WAKEUP, date.getTime(), pendingIntent);
+            Log.e("broadcast_id", "" + broadcast_id);
         } catch (ParseException e) {
             e.printStackTrace();
         }
