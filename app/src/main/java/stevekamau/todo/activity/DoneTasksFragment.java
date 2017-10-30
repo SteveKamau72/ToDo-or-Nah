@@ -1,4 +1,4 @@
-package stevekamau.todo;/**
+package stevekamau.todo.activity;/**
  * Created by steve on 9/26/17.
  */
 
@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import stevekamau.todo.R;
+import stevekamau.todo.adapters.ToDoAdapter;
+import stevekamau.todo.utils.ToDoDB;
 
 public class DoneTasksFragment extends Fragment {
     private static final String TAG = DoneTasksFragment.class.getSimpleName();

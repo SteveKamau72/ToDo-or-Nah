@@ -1,4 +1,4 @@
-package stevekamau.todo;
+package stevekamau.todo.activity;
 
 
 import android.app.Activity;
@@ -31,6 +31,11 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import stevekamau.todo.R;
+import stevekamau.todo.utils.AlarmReceiver;
+import stevekamau.todo.utils.TimeDateUtils;
+import stevekamau.todo.utils.ToDoDB;
+import stevekamau.todo.utils.Toasty;
 
 
 /**
@@ -160,6 +165,7 @@ public class AddToDoFragment extends Fragment implements TimePickerDialog.OnTime
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH)
         );
+        dpd.setMinDate(now);
         dpd.show(parentActivity.getFragmentManager(), "Datepickerdialog");
     }
 
@@ -172,6 +178,9 @@ public class AddToDoFragment extends Fragment implements TimePickerDialog.OnTime
                 now.get(Calendar.MINUTE),
                 false
         );
+        if (tvDate.getText().toString().equalsIgnoreCase("today")) {
+            tpd.setMinTime(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
+        }
         tpd.show(parentActivity.getFragmentManager(), "Timepickerdialog");
     }
 

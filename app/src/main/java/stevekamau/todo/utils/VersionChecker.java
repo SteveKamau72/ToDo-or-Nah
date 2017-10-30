@@ -1,4 +1,4 @@
-package stevekamau.todo;
+package stevekamau.todo.utils;
 
 import android.content.Context;
 import android.os.AsyncTask;

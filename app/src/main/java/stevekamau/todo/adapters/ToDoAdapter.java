@@ -1,4 +1,4 @@
-package stevekamau.todo;
+package stevekamau.todo.adapters;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -16,6 +17,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import stevekamau.todo.R;
+import stevekamau.todo.models.ToDoItem;
+import stevekamau.todo.utils.TimeDateUtils;
 
 /**
  * Created by steve on 9/6/17.
@@ -62,6 +69,13 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         //reminder icon
         if (toDoItem.getReminder().equalsIgnoreCase("1")) {
             holder.reminderIcon.setVisibility(View.VISIBLE);
+            holder.linearLayoutReminderSet.setVisibility(View.VISIBLE);
+            String reminderDate = TimeDateUtils.formatDate(toDoItem.getCreatedAt(),
+                    "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd");
+            String reminderTime = TimeDateUtils.formatDate(toDoItem.getCreatedAt(),
+                    "yyyy/MM/dd HH:mm:ss", "HH:mm:ss");
+            holder.textSetTime.setText(TimeDateUtils.formatIntoAmPm(reminderTime) + " "
+                    + TimeDateUtils.formatDate(reminderDate, "yyyy/MM/dd", "EE dd, MMM"));
             //check if date is past
             try {
                 if (simpleDateFormat.parse(toDoItem.getCreatedAt()).before(new Date())) {
@@ -72,6 +86,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             }
         } else {
             holder.reminderIcon.setVisibility(View.INVISIBLE);
+            holder.linearLayoutReminderSet.setVisibility(View.GONE);
         }
         Log.e("s_track_1", "onBindViewHolder " + toDoItem.getReminder());
     }
@@ -91,16 +106,21 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
     public static class ToDoViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textTitle;
-        public CheckBox checkBox;
-        public ImageView reminderIcon;
+        @BindView(R.id.title)
+        TextView textTitle;
+        @BindView(R.id.time_set_text)
+        TextView textSetTime;
+        @BindView(R.id.checkbox)
+        CheckBox checkBox;
+        @BindView(R.id.reminder_icon)
+        ImageView reminderIcon;
+        @BindView(R.id.reminder_set)
+        LinearLayout linearLayoutReminderSet;
 
-        public ToDoViewHolder(View itemView) {
+        ToDoViewHolder(View itemView) {
             // standard view holder pattern with Butterknife view injection
             super(itemView);
-            textTitle = (TextView) itemView.findViewById(R.id.title);
-            checkBox = (CheckBox) itemView.findViewById(R.id.checkbox);
-            reminderIcon = (ImageView) itemView.findViewById(R.id.reminder_icon);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

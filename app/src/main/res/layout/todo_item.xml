@@ -6,9 +6,14 @@
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
-    android:orientation="horizontal"
+    android:longClickable="true"
+    android:orientation="vertical"
     android:padding="5dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <CheckBox
         android:id="@+id/checkbox"
         android:layout_width="wrap_content"
@@ -27,22 +32,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/reminder_icon"
             android:gravity="start"
             android:text="cbshcbhscb"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:typeface="Roboto-Light.ttf" />
+    </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/reminder_set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/button_shape_mauvre"
+        android:elevation="5dp">
 
         <ImageView
             android:id="@+id/reminder_icon"
-            android:layout_width="30dp"
-            android:visibility="invisible"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_reminder_set" />
-    </RelativeLayout>
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_reminder_set"
+            android:visibility="visible" />
 
+        <com.ctrlplusz.anytextview.AnyTextView
+            android:id="@+id/time_set_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="12pm"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:typeface="Roboto-Medium.ttf" />
+    </LinearLayout>
 </LinearLayout>

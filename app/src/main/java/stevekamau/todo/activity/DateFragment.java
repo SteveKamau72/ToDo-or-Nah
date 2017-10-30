@@ -1,4 +1,4 @@
-package stevekamau.todo;/**
+package stevekamau.todo.activity;/**
  * Created by steve on 10/9/17.
  */
 
@@ -18,6 +18,7 @@ import com.applikeysolutions.cosmocalendar.view.CalendarView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import stevekamau.todo.R;
 
 public class DateFragment extends Fragment {
     private static final String TAG = DateFragment.class.getSimpleName();

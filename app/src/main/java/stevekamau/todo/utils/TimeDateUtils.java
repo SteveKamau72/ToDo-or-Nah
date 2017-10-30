@@ -1,4 +1,4 @@
-package stevekamau.todo;
+package stevekamau.todo.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

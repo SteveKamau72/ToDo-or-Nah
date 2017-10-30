@@ -1,8 +1,10 @@
-package stevekamau.todo;
+package stevekamau.todo.utils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import stevekamau.todo.utils.NotificationUtils;
 
 /**
  * Created by steve on 10/18/17.

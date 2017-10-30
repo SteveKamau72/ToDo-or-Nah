@@ -1,16 +1,20 @@
-package stevekamau.todo;/**
+package stevekamau.todo.activity;/**
  * Created by steve on 10/13/17.
  */
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -19,6 +23,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
+import stevekamau.todo.R;
+import stevekamau.todo.adapters.HeaderRecyclerViewSection;
+import stevekamau.todo.models.ToDoItem;
+import stevekamau.todo.utils.TimeDateUtils;
+import stevekamau.todo.utils.ToDoDB;
+import stevekamau.todo.utils.Toasty;
 
 public class AllToDOsFragement extends Fragment {
     private static final String TAG = AllToDOsFragement.class.getSimpleName();
@@ -30,6 +40,8 @@ public class AllToDOsFragement extends Fragment {
     ArrayList<String> groupedDatesList = new ArrayList<>();
     ArrayList<ToDoItem> toDosList = new ArrayList<>();
     ArrayList<ToDoItem> allToDosList = new ArrayList<>();
+    @BindView(R.id.emptyList)
+    LinearLayout emptyList;
 
     public AllToDOsFragement() {
     }
@@ -57,12 +69,16 @@ public class AllToDOsFragement extends Fragment {
         return rootView;
     }
 
-    private void setViews() {
+    public void setViews() {
+        groupedDatesList.clear();
+        toDosList.clear();
+        allToDosList.clear();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(parentActivity);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
         allToDosList = toDoDB.getAllToDoItems();
         groupedDatesList = toDoDB.getAllToDosDates();
+        checkAvailabilityOfTodos();
         sectionAdapter = new SectionedRecyclerViewAdapter();
         Log.e("grouped_dates", String.valueOf(groupedDatesList));
 
@@ -73,7 +89,7 @@ public class AllToDOsFragement extends Fragment {
                 HeaderRecyclerViewSection headerSection = new HeaderRecyclerViewSection(
                         TimeDateUtils.formatDate(groupedDatesList.get(i),
                                 "yyyy/MM/dd", "EEEE dd, MMMM"), toDosList
-                        , parentActivity);
+                        , parentActivity, AllToDOsFragement.this);
                 sectionAdapter.addSection(headerSection);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -81,6 +97,15 @@ public class AllToDOsFragement extends Fragment {
         }
         recyclerView.setAdapter(sectionAdapter);
     }
+
+    private void checkAvailabilityOfTodos() {
+        if (allToDosList.size() > 0) {
+            emptyList.setVisibility(View.GONE);
+        } else {
+            emptyList.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -91,6 +116,32 @@ public class AllToDOsFragement extends Fragment {
     @OnClick(R.id.cancel)
     void close() {
         parentActivity.onBackPressed();
+    }
+
+    @OnClick(R.id.delete)
+    void deleteAll() {
+        if (toDoDB.getAllToDoItems().size() > 0) {
+            AlertDialog alertDialog = new AlertDialog.Builder(parentActivity).create();
+            alertDialog.setTitle("Whooaaa!");
+            alertDialog.setMessage("Delete all ToDo's?");
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            toDoDB.deleteAllTodos();
+                            ((MainActivity) parentActivity).setViews();
+                        }
+                    });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "NAH",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+        } else {
+            Toasty.info(getActivity(), "Nothing to delete here!", Toast.LENGTH_LONG, true).show();
+        }
     }
 
     @Override

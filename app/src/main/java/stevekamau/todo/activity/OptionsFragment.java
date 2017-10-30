@@ -1,4 +1,4 @@
-package stevekamau.todo;/**
+package stevekamau.todo.activity;/**
  * Created by steve on 10/16/17.
  */
 
@@ -15,6 +15,8 @@ import com.codemybrainsout.ratingdialog.RatingDialog;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import stevekamau.todo.utils.IntentUtils;
+import stevekamau.todo.R;
 
 public class OptionsFragment extends Fragment {
     private static final String TAG = OptionsFragment.class.getSimpleName();

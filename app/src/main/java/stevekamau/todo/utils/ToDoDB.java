@@ -1,14 +1,16 @@
-package stevekamau.todo;
+package stevekamau.todo.utils;
 
-import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+
+import stevekamau.todo.models.ToDoItem;
 
 /**
  * Created by steve on 9/29/17.
@@ -91,7 +93,7 @@ public class ToDoDB extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("status", status);
-        db.update(TABLE_NAME, cv, "title = ?", new String[]{String.valueOf(id)});
+        db.update(TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
     }
 
     public ArrayList<String> getAllToDosDates() {
@@ -154,6 +156,17 @@ public class ToDoDB extends SQLiteOpenHelper {
         return toDoItemArrayList;
     }
 
+    public void deleteAllTodos() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        try {
+
+            db.execSQL("DELETE FROM " + TABLE_NAME);
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+
+    }
     public int deleteToDo(String todo_id) {
         SQLiteDatabase db = this.getReadableDatabase();
         int deletedVal = -1;

@@ -1,4 +1,4 @@
-package stevekamau.todo;
+package stevekamau.todo.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import stevekamau.todo.R;
 
 /**
  * This file is part of Toasty.

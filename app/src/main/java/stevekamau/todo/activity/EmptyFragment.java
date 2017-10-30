@@ -1,10 +1,12 @@
-package stevekamau.todo;
+package stevekamau.todo.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import stevekamau.todo.R;
 
 /**
  * Created by steve on 9/6/17.

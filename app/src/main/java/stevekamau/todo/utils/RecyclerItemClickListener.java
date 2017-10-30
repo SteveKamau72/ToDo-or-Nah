@@ -1,4 +1,4 @@
-package stevekamau.todo;
+package stevekamau.todo.utils;
 
 /**
  * Created by steve on 7/1/17.

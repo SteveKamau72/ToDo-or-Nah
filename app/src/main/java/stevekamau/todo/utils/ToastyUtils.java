@@ -1,4 +1,4 @@
-package stevekamau.todo;
+package stevekamau.todo.utils;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -10,6 +10,8 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.view.View;
+
+import stevekamau.todo.R;
 
 /**
  * This file is part of Toasty.

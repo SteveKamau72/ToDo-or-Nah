@@ -1,4 +1,4 @@
-package stevekamau.todo;
+package stevekamau.todo.models;
 
 /**
  * Created by steve on 9/6/17.

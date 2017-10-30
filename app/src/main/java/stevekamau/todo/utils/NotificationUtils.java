@@ -1,4 +1,4 @@
-package stevekamau.todo;
+package stevekamau.todo.utils;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -8,6 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+
+import stevekamau.todo.R;
+import stevekamau.todo.activity.MainActivity;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 

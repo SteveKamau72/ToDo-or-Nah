@@ -1,4 +1,4 @@
-package stevekamau.todo;
+package stevekamau.todo.activity;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -35,6 +35,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
+import stevekamau.todo.R;
+import stevekamau.todo.adapters.ToDoAdapter;
+import stevekamau.todo.models.ToDoItem;
+import stevekamau.todo.utils.AlarmReceiver;
+import stevekamau.todo.utils.IntentUtils;
+import stevekamau.todo.utils.RecyclerItemClickListener;
+import stevekamau.todo.utils.TimeDateUtils;
+import stevekamau.todo.utils.ToDoDB;
+import stevekamau.todo.utils.Toasty;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.recyclerView)
@@ -68,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("general_settings", MODE_PRIVATE);
     }
 
-    private void setViews() {
+    public void setViews() {
+        activeTodoItemsList.clear();
         tvDayToday.setText(TimeDateUtils.getTodayDate("EEEE") + " " + TimeDateUtils.getTodayDate("dd"));
         tvMonth.setText(TimeDateUtils.getTodayDate("MMMM"));
         activeTodoItemsList = toDoDB.getTodayToDoItems("active");
@@ -118,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onLongItemClick(View view, int position) {
                         // do whatever
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                        todo_id = activeTodoItemsList.get(position).getId();
+                        ToDoItem todoItem = activeTodoItemsList.get(position);
+                        callBottomSheet(todoItem);
                     }
                 })
         );
@@ -312,5 +322,10 @@ public class MainActivity extends AppCompatActivity {
 
     public String getSelectedToDoItemId() {
         return String.valueOf(todo_id);
+    }
+
+    public void callBottomSheet(ToDoItem toDoItem) {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        todo_id = toDoItem.getId();
     }
 }
