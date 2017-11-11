@@ -33,11 +33,11 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import stevekamau.todo.utils.AlarmReceiver;
 import stevekamau.todo.R;
+import stevekamau.todo.models.ToDoItem;
+import stevekamau.todo.utils.AlarmReceiver;
 import stevekamau.todo.utils.TimeDateUtils;
 import stevekamau.todo.utils.ToDoDB;
-import stevekamau.todo.models.ToDoItem;
 import stevekamau.todo.utils.Toasty;
 
 public class EditToDoFragment extends Fragment implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
@@ -111,16 +111,15 @@ public class EditToDoFragment extends Fragment implements TimePickerDialog.OnTim
             edTodo.setError("Come on, say something!");
         } else {
             edTodo.setError(null);
-            saveToDB();
+            editDB();
             hideKeyboard(getActivity());
             ((MainActivity) getActivity()).closeFragments();
         }
 
     }
 
-    private void saveToDB() {
-//        2017/10/18 00:49:40 00:55:00
-        toDoDB.addTodo(edTodo.getText().toString(),
+    private void editDB() {
+        toDoDB.updateToDoItem(String.valueOf(toDoItemArrayList.get(0).getId()), edTodo.getText().toString(),
                 selectedDate + " " + selectedTime, "active", reminder);
         ((MainActivity) getActivity()).updateTodaysTodos();
         ((MainActivity) getActivity()).setAdapter();

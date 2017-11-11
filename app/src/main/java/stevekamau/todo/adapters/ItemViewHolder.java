@@ -26,6 +26,8 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
     LinearLayout rowLayout;
     @BindView(R.id.reminder_icon)
     ImageView reminderIcon;
+    @BindView(R.id.reminder_up_arrow)
+    ImageView reminderUpArrow;
     @BindView(R.id.reminder_set)
     LinearLayout linearLayoutReminderSet;
 

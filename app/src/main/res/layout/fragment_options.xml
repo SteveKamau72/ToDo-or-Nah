@@ -15,6 +15,20 @@
         android:padding="10dp"
         android:src="@drawable/ic_cancel" />
 
+    <com.ctrlplusz.anytextview.AnyTextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cancel"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="5dp"
+        android:text="Options"
+        android:textColor="@color/title_text"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:typeface="Roboto-Medium.ttf" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

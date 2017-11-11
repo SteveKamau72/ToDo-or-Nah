@@ -69,6 +69,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         //reminder icon
         if (toDoItem.getReminder().equalsIgnoreCase("1")) {
             holder.reminderIcon.setVisibility(View.VISIBLE);
+            holder.reminderUpArrow.setVisibility(View.VISIBLE);
             holder.linearLayoutReminderSet.setVisibility(View.VISIBLE);
             String reminderDate = TimeDateUtils.formatDate(toDoItem.getCreatedAt(),
                     "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd");
@@ -80,12 +81,15 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             try {
                 if (simpleDateFormat.parse(toDoItem.getCreatedAt()).before(new Date())) {
                     holder.reminderIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_reminder_past));
+                    holder.reminderUpArrow.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_up_arrow_grey));
+                    holder.linearLayoutReminderSet.setBackgroundResource(R.drawable.button_shape_grey);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         } else {
             holder.reminderIcon.setVisibility(View.INVISIBLE);
+            holder.reminderUpArrow.setVisibility(View.INVISIBLE);
             holder.linearLayoutReminderSet.setVisibility(View.GONE);
         }
         Log.e("s_track_1", "onBindViewHolder " + toDoItem.getReminder());
@@ -114,6 +118,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         CheckBox checkBox;
         @BindView(R.id.reminder_icon)
         ImageView reminderIcon;
+        @BindView(R.id.reminder_up_arrow)
+        ImageView reminderUpArrow;
         @BindView(R.id.reminder_set)
         LinearLayout linearLayoutReminderSet;
 

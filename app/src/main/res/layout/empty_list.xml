@@ -31,7 +31,7 @@
         android:gravity="center_horizontal"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:text="Not busy? Add something to do here. Work! Work! Work!"
+        android:text="Not busy today? Add something to do here. Work! Work! Work!"
         android:textColor="@color/grey"
         android:textSize="16sp"
         app:typeface="Roboto-Light.ttf" />

@@ -199,4 +199,23 @@ public class ToDoDB extends SQLiteOpenHelper {
         return toDoItemArrayList;
 
     }
+
+    public void updateToDoItem(String todoId, String title, String created_at, String status, Boolean reminder) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selection = COLUMN_ID + " LIKE ?";
+        String[] selectionArgs = {todoId};
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("title", title);
+        contentValues.put("created_at", created_at);
+        contentValues.put("status", status);
+        contentValues.put("reminder", reminder);
+
+        //Selection criteria
+        int count = db.update(
+                TABLE_NAME,
+                contentValues,
+                selection,
+                selectionArgs);
+    }
 }

@@ -64,11 +64,16 @@ public class HeaderRecyclerViewSection extends StatelessSection {
             strikeThroughText(iHolder.tvTitle);
             iHolder.checkBox.setChecked(true);
             iHolder.linearLayoutReminderSet.setBackgroundResource(R.drawable.button_shape_grey);
+            iHolder.reminderIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_reminder_past));
+            iHolder.reminderUpArrow.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_up_arrow_grey));
+            iHolder.reminderIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_reminder_past));
         } else {
             iHolder.tvTitle.setTextColor(context.getResources().getColor(R.color.black));
             unStrikeThroughText(iHolder.tvTitle);
             iHolder.checkBox.setChecked(false);
             iHolder.linearLayoutReminderSet.setBackgroundResource(R.drawable.button_shape_mauvre);
+            iHolder.reminderIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_reminder_set));
+            iHolder.reminderUpArrow.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_up_arrow_mauvre));
         }
         iHolder.rowLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +96,7 @@ public class HeaderRecyclerViewSection extends StatelessSection {
         //reminder icon
         if (toDoItem.getReminder().equalsIgnoreCase("1")) {
             iHolder.reminderIcon.setVisibility(View.VISIBLE);
+            iHolder.reminderUpArrow.setVisibility(View.VISIBLE);
             iHolder.linearLayoutReminderSet.setVisibility(View.VISIBLE);
             String reminderDate = TimeDateUtils.formatDate(toDoItem.getCreatedAt(),
                     "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd");
@@ -102,12 +108,15 @@ public class HeaderRecyclerViewSection extends StatelessSection {
             try {
                 if (simpleDateFormat.parse(toDoItem.getCreatedAt()).before(new Date())) {
                     iHolder.reminderIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_reminder_past));
+                    iHolder.reminderUpArrow.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_up_arrow_grey));
+                    iHolder.linearLayoutReminderSet.setBackgroundResource(R.drawable.button_shape_grey);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         } else {
             iHolder.reminderIcon.setVisibility(View.INVISIBLE);
+            iHolder.reminderUpArrow.setVisibility(View.INVISIBLE);
             iHolder.linearLayoutReminderSet.setVisibility(View.GONE);
         }
 
