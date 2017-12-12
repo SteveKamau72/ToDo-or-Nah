@@ -11,4 +11,6 @@
     <string name="add_reminder">Add Reminder</string>
     <string name="edit">Edit</string>
     <string name="add_todo_hint">Try to keep it simple</string>
+    <string name="morning_welcome_title">Rise and shine!</string>
+    <string name="done_with_day_title">Done with your day yet?</string>
 </resources>

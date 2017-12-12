@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -88,7 +89,6 @@ public class AddToDoFragment extends Fragment implements TimePickerDialog.OnTime
     }
 
     private void saveToDB() {
-//        2017/10/18 00:49:40 00:55:00
         toDoDB.addTodo(edTodo.getText().toString(),
                 selectedDate + " " + selectedTime, "active", reminder);
         ((MainActivity) getActivity()).updateTodaysTodos();
@@ -96,8 +96,10 @@ public class AddToDoFragment extends Fragment implements TimePickerDialog.OnTime
         if (reminder) {
             setReminderAlarm(selectedDate + " " + selectedTime);
         }
+        setEveningNotificationForSelectedDate(selectedDate);
         Toasty.success(getActivity(), "Noted!", Toast.LENGTH_LONG, true).show();
     }
+
 
     private void setReminderAlarm(String dateTime) {
         Log.e("time_set", selectedDate + " " + selectedTime);
@@ -105,7 +107,8 @@ public class AddToDoFragment extends Fragment implements TimePickerDialog.OnTime
         try {
             Date date = (Date) formatter.parse(dateTime);
             Intent intentAlarm = new Intent(parentActivity, AlarmReceiver.class);
-            intentAlarm.putExtra("todo", edTodo.getText().toString());
+            intentAlarm.putExtra("title", getString(R.string.app_name));
+            intentAlarm.putExtra("message", edTodo.getText().toString());
             // create the object
             AlarmManager alarmManager = (AlarmManager) parentActivity.getSystemService(Context.ALARM_SERVICE);
             final int broadcast_id = (int) date.getTime();
@@ -118,6 +121,26 @@ public class AddToDoFragment extends Fragment implements TimePickerDialog.OnTime
             e.printStackTrace();
         }
 
+    }
+
+    private void setEveningNotificationForSelectedDate(String selectedDate) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault());
+        try {
+            Date date = (Date) formatter.parse(selectedDate + " 20:00:00");
+            Intent intentAlarm = new Intent(parentActivity, AlarmReceiver.class);
+            intentAlarm.putExtra("title", getString(R.string.done_with_day_title));
+            intentAlarm.putExtra("message", "Tick off done todos");
+            // create the object
+            AlarmManager alarmManager = (AlarmManager) parentActivity.getSystemService(Context.ALARM_SERVICE);
+            final int broadcast_id = (int) date.getTime();
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    parentActivity, broadcast_id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
+            //set the alarm for particular time
+            alarmManager.set(AlarmManager.RTC_WAKEUP, date.getTime(), pendingIntent);
+            Log.e("broadcast_id", "" + broadcast_id);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @OnClick(R.id.cancel)
@@ -181,7 +204,15 @@ public class AddToDoFragment extends Fragment implements TimePickerDialog.OnTime
         if (tvDate.getText().toString().equalsIgnoreCase("today")) {
             tpd.setMinTime(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
         }
+        tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                reminderSwitchIcon.setIconEnabled(false);
+                reminder = false;
+            }
+        });
         tpd.show(parentActivity.getFragmentManager(), "Timepickerdialog");
+
     }
 
     @Override

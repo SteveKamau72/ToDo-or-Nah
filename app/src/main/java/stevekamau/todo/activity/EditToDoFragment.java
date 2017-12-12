@@ -136,7 +136,8 @@ public class EditToDoFragment extends Fragment implements TimePickerDialog.OnTim
         try {
             date = (Date) formatter.parse(dateTime);
             Intent intentAlarm = new Intent(parentActivity, AlarmReceiver.class);
-            intentAlarm.putExtra("todo", edTodo.getText().toString());
+            intentAlarm.putExtra("title", getString(R.string.app_name));
+            intentAlarm.putExtra("message", edTodo.getText().toString());
             // create the object
             AlarmManager alarmManager = (AlarmManager) parentActivity.getSystemService(Context.ALARM_SERVICE);
             final int broadcast_id = 0;

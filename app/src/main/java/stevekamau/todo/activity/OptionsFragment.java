@@ -15,8 +15,8 @@ import com.codemybrainsout.ratingdialog.RatingDialog;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import stevekamau.todo.utils.IntentUtils;
 import stevekamau.todo.R;
+import stevekamau.todo.utils.IntentUtils;
 
 public class OptionsFragment extends Fragment {
     private static final String TAG = OptionsFragment.class.getSimpleName();
@@ -69,7 +69,9 @@ public class OptionsFragment extends Fragment {
 
     @OnClick(R.id.share_layout)
     void share() {
-        startActivity(Intent.createChooser(IntentUtils.shareContent("Simple todo app to keep you on track of your day, download ", "ToDo-or-Nah for Android"), "Share..."));
+        startActivity(Intent.createChooser(IntentUtils.shareContent("A simple to do app that does exactly that! Check it out" +
+                        " https://play.google.com/store/apps/details?id=" + parentActivity.getPackageName(),
+                "ToDo-or-Nah for Android"), "Share..."));
     }
 
     @OnClick(R.id.rate_layout)
@@ -79,13 +81,13 @@ public class OptionsFragment extends Fragment {
                 .title("We're awesome, yes? Rate us")
                 .titleTextColor(R.color.black)
                 .negativeButtonText("Not Now")
+                .threshold(5)
                 .negativeButtonTextColor(R.color.grey_200)
-                .threshold(3)
                 .formTitle("Submit Feedback")
                 .formHint("Tell us where we can improve")
                 .formSubmitText("Submit")
                 .formCancelText("Cancel")
-                .ratingBarColor(R.color.accent)
+                .ratingBarColor(R.color.mauvre)
                 .positiveButtonBackgroundColor(R.drawable.button_selector_positive)
                 .negativeButtonBackgroundColor(R.drawable.button_selector_negative)
                 .onRatingChanged(new RatingDialog.RatingDialogListener() {

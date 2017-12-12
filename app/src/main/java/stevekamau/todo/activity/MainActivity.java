@@ -24,9 +24,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codemybrainsout.ratingdialog.RatingDialog;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -56,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     TextView tvTaskNo;
     @BindView(R.id.emptyList)
     LinearLayout emptyList;
+    @BindView(R.id.show_history)
+    LinearLayout linearLayoutShowHistory;
     @BindView(R.id.bottom_sheet)
     View viewBottomSheet;
     ToDoAdapter todoAdapter;
@@ -65,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     int todo_id;
     private BottomSheetBehavior bottomSheetBehavior;
     SharedPreferences sharedPreferences;
+    private PendingIntent pendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +79,10 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         toDoDB = new ToDoDB(this);
         setViews();
-
+        setUpMorningDailyNotification(7, "morning");
         sharedPreferences = getSharedPreferences("general_settings", MODE_PRIVATE);
     }
+
 
     public void setViews() {
         activeTodoItemsList.clear();
@@ -184,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createFragments(Fragment fragment) {
+        linearLayoutShowHistory.setVisibility(View.INVISIBLE);
         hideBottomSheet();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -261,12 +269,14 @@ public class MainActivity extends AppCompatActivity {
         int fragments = getSupportFragmentManager().getBackStackEntryCount();
         if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
         } else {
-        if (fragments == 0) {
-            finish();
-        } else {
-            super.onBackPressed();
-        }
+            if (fragments == 0) {
+                finish();
+            } else {
+                super.onBackPressed();
+                linearLayoutShowHistory.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -284,6 +294,7 @@ public class MainActivity extends AppCompatActivity {
         if (sharedPreferences.getBoolean("new_update", false)) {
             showUpdateDialog();
         }
+        ratingDialog();
     }
 
     public static void hideKeyboard(Activity activity) {
@@ -327,5 +338,57 @@ public class MainActivity extends AppCompatActivity {
     public void callBottomSheet(ToDoItem toDoItem) {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         todo_id = toDoItem.getId();
+    }
+
+    private void ratingDialog() {
+        final RatingDialog ratingDialog = new RatingDialog.Builder(MainActivity.this)
+                .icon(getResources().getDrawable(R.drawable.launcher))
+                .title("We're awesome, yes? Rate us")
+                .titleTextColor(R.color.black)
+                .threshold(5)
+                .session(5)
+                .formTitle("Submit Feedback")
+                .formHint("Tell us where we can improve")
+                .formSubmitText("Submit")
+                .formCancelText("Cancel")
+                .ratingBarColor(R.color.colorPrimary)
+                .positiveButtonTextColor(R.color.white)
+                .positiveButtonBackgroundColor(R.drawable.button_selector_positive)
+                .negativeButtonBackgroundColor(R.drawable.button_selector_negative)
+                .onRatingChanged(new RatingDialog.RatingDialogListener() {
+                    @Override
+                    public void onRatingSelected(float rating, boolean thresholdCleared) {
+
+                    }
+                })
+                .onRatingBarFormSumbit(new RatingDialog.RatingDialogFormListener() {
+                    @Override
+                    public void onFormSubmitted(String feedback) {
+                        startActivity(Intent.createChooser(IntentUtils.sendEmail("steveKamau72@gmail.com", "FeedBack on ToDo-or-Nah for Android", feedback), "Email us"));
+                    }
+                }).build();
+
+        ratingDialog.show();
+    }
+
+    private void setUpMorningDailyNotification(int hour, String mode) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        long timeToAlarm = calendar.getTimeInMillis();
+        if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
+            timeToAlarm += (24 * 60 * 60 * 1000);
+        }
+        Intent intent1 = new Intent(MainActivity.this, AlarmReceiver.class);
+        intent1.putExtra("title", getString(R.string.morning_welcome_title));
+        intent1.putExtra("message", "Tap to add something to do today");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                MainActivity.this, 0, intent1,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) MainActivity.this
+                .getSystemService(MainActivity.this.ALARM_SERVICE);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, timeToAlarm,
+                AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 }

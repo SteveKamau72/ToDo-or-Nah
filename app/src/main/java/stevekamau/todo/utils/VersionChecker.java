@@ -2,6 +2,7 @@ package stevekamau.todo.utils;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.jsoup.Jsoup;
 
@@ -34,6 +35,7 @@ public class VersionChecker extends AsyncTask<String, String, String> {
                     .ownText();
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e("jsoup_error", e.getMessage());
         }
 
         return newVersion;

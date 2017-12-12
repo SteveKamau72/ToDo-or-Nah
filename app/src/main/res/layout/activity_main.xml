@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context="stevekamau.todo.activity.MainActivity">
 
     <RelativeLayout
@@ -135,8 +136,9 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/header"
         android:visibility="visible" />
-
+    <!--view all TODOS-->
     <LinearLayout
+        android:id="@+id/show_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -154,7 +156,6 @@
             android:src="@drawable/ic_history" />
 
         <com.ctrlplusz.anytextview.AnyTextView
-            android:id="@+id/show_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"

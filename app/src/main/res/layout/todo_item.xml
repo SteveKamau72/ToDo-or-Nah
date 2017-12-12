@@ -54,8 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="-10dp"
-        android:background="@drawable/button_shape_mauvre"
-        android:elevation="5dp">
+        android:background="@drawable/button_shape_mauvre">
 
         <ImageView
             android:id="@+id/reminder_icon"
